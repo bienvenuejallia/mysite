@@ -8,20 +8,26 @@
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-content">
-      <a class="logo" href="#accueil">MyTask<span>Site</span></a>
+  
+ <header class="site-header">
+  <div class="container header-content">
+    <a class="logo" href="#accueil" aria-label="Retour accueil">
+      <span class="logo-mark">TB</span>
+      <span class="logo-text">MyTask<span>Site</span></span>
+    </a>
 
-      <nav class="main-nav" aria-label="Navigation principale">
-        <a href="#accueil" class="nav-link">Accueil</a>
-        <a href="#appli" class="nav-link">Application</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </nav>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#accueil" class="nav-link">Accueil</a>
+      <a href="#appli" class="nav-link">Application</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
 
+    <div class="header-actions">
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer le thème">🌙</button>
     </div>
-  </header>
+  </div>
+</header>
+
 
   <!-- HERO -->
   <section id="accueil" class="hero">
@@ -501,3 +507,4 @@
   <script src="./script.js" defer></script>
 </body>
 </html>
+
