@@ -61,9 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      if (!contactForm.action || contactForm.action.includes("XXXXXXX")) {
+      // ✅ plus safe : détecte aussi TON_ID_ICI
+      if (!contactForm.action || contactForm.action.includes("XXXXXXX") || contactForm.action.includes("TON_ID_ICI")) {
         contactStatus.className = "form-status err";
-        contactStatus.textContent = "⚠️ Ajoute ton lien Formspree dans action=\"...\"";
+        contactStatus.textContent = "⚠️ Ajoute ton lien Formspree réel dans action=\"...\"";
         return;
       }
 
@@ -77,13 +78,17 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Accept": "application/json" }
         });
 
+        // ✅ lire json si possible (Formspree renvoie des erreurs détaillées)
+        const data = await res.json().catch(() => null);
+
         if (res.ok) {
           contactStatus.className = "form-status ok";
           contactStatus.textContent = "✅ Message envoyé ! Merci 🙂";
           contactForm.reset();
         } else {
+          const msg = data?.errors?.[0]?.message;
           contactStatus.className = "form-status err";
-          contactStatus.textContent = "❌ Erreur : envoi impossible. Réessaie.";
+          contactStatus.textContent = msg ? `❌ ${msg}` : "❌ Erreur : envoi impossible. Réessaie.";
         }
       } catch {
         contactStatus.className = "form-status err";
@@ -150,11 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- State UI
   const view = {
     selectedId: null,
-    filters: {
-      status: "all",
-      priority: "all",
-      category: "all"
-    },
+    filters: { status: "all", priority: "all", category: "all" },
     search: "",
     sort: "created_desc"
   };
@@ -207,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const priorityRank = (p) => {
-    // pour trier : Urgente > Haute > Normale > Basse
     if (p === "Urgente") return 4;
     if (p === "Haute") return 3;
     if (p === "Normale") return 2;
@@ -316,25 +316,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyView = (tasks) => {
     let out = tasks.slice().map(normalizeStatus);
 
-    // filters
     if (view.filters.status !== "all") out = out.filter(t => t.status === view.filters.status);
     if (view.filters.priority !== "all") out = out.filter(t => t.priority === view.filters.priority);
     if (view.filters.category !== "all") out = out.filter(t => t.category === view.filters.category);
 
-    // search (title + note + tags)
     const q = view.search.trim().toLowerCase();
     if (q) {
       out = out.filter(t => {
-        const hay = [
-          t.title,
-          t.note,
-          ...(t.tags || [])
-        ].join(" ").toLowerCase();
+        const hay = [t.title, t.note, ...(t.tags || [])].join(" ").toLowerCase();
         return hay.includes(q);
       });
     }
 
-    // sort
     const s = view.sort;
     out.sort((a, b) => {
       if (s === "created_asc") return (a.createdAt || 0) - (b.createdAt || 0);
@@ -349,16 +342,19 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================
-  // Details panel
+  // Details panel (✅ FIX: ne dépend plus du bouton)
   // =========================
   const renderDetails = (task) => {
-    if (!detailsBox || !detailsEmpty || !playTaskSoundBtn) return;
+    if (!detailsBox || !detailsEmpty) return;
 
+    // si bouton absent, on continue quand même
     if (!task) {
       detailsEmpty.style.display = "block";
       detailsBox.innerHTML = "";
-      playTaskSoundBtn.disabled = true;
-      playTaskSoundBtn.dataset.id = "";
+      if (playTaskSoundBtn) {
+        playTaskSoundBtn.disabled = true;
+        playTaskSoundBtn.dataset.id = "";
+      }
       return;
     }
 
@@ -381,11 +377,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       ${(task.tags && task.tags.length) ? `<div class="details-row"><span>Tags</span><b></b></div><div class="details-tags">${tags}</div>` : ""}
 
-      ${(task.subtasks && task.subtasks.length) ? `<div class="subtasks">${subtasks}</div>` : ""}
+      ${(task.subtasks && task.subtasks.length) ? `<div class="details-row"><span>Sous-tâches</span><b></b></div><div class="subtasks">${subtasks}</div>` : ""}
     `;
 
-    playTaskSoundBtn.disabled = false;
-    playTaskSoundBtn.dataset.id = task.id;
+    if (playTaskSoundBtn) {
+      playTaskSoundBtn.disabled = false;
+      playTaskSoundBtn.dataset.id = task.id;
+    }
   };
 
   // =========================
@@ -398,7 +396,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress(tasks);
 
     const visible = applyView(tasks);
-
     taskList.innerHTML = "";
 
     if (visible.length === 0) {
@@ -410,7 +407,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="task-note">Ajoute une tâche via le formulaire, ou change les filtres.</div>
         </div>`;
       taskList.appendChild(li);
-      renderDetails(null);
+
+      // ✅ si selectedId existe encore dans tasks, on garde, sinon null
+      const cur = tasks.find(x => x.id === view.selectedId);
+      renderDetails(cur || null);
       return;
     }
 
@@ -453,9 +453,8 @@ document.addEventListener("DOMContentLoaded", () => {
       taskList.appendChild(li);
     });
 
-    // garder les détails si selectedId existe encore
-    const all = loadTasks();
-    const current = all.find(x => x.id === view.selectedId);
+    // ✅ rend les détails depuis tasks (pas re-load inutile)
+    const current = tasks.find(x => x.id === view.selectedId);
     renderDetails(current || null);
   };
 
@@ -517,7 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tasks.push(t);
     saveTasks(tasks);
 
-    // sélection automatique + détails
+    // ✅ sélection automatique + détails
     view.selectedId = t.id;
 
     render();
@@ -762,6 +761,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(checkReminders, CHECK_EVERY);
 });
 
+// =========================
+// NAV ACTIVE (garde en dehors du DOMContentLoaded comme tu l’avais)
+// =========================
 const navLinks = document.querySelectorAll(".main-nav a");
 
 const setActive = () => {
