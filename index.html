@@ -12,12 +12,12 @@
   <header class="site-header">
     <div class="container header-content">
       <a class="logo" href="#accueil">MyTask<span>Site</span></a>
+
       <nav class="main-nav">
         <a href="#accueil" class="nav-link">Accueil</a>
         <a href="#appli" class="nav-link">Application</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
-
 
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer le thème">🌙</button>
     </div>
@@ -301,6 +301,8 @@
           </div>
 
           <p class="hint">Clique sur une tâche pour voir ses détails à droite. Le rappel se déclenche automatiquement si configuré.</p>
+
+          <!-- ✅ IMPORTANT : c’est ici que les tâches s’affichent -->
           <ul id="task-list" class="task-list"></ul>
         </div>
 
@@ -354,151 +356,143 @@
     </div>
   </section>
 
- 
-
-      <!-- Colonne droite : formulaire -->
-      
-<!-- CONTACT (PRO) -->
-<section id="contact" class="section section-alt contact-pro">
-  <div class="container">
-    <div class="contact-head">
-      <h2>Contact</h2>
-      <p class="section-intro">Envoie-moi un message (réel) : je réponds dès que possible.</p>
-    </div>
-
-    <div class="contact-grid">
-      <!-- Colonne gauche -->
-      <div class="contact-info">
-        <span class="info-badge">💬 Feedback / Support</span>
-        <h3>Parlons de ton projet</h3>
-        <p class="info-text">
-          Tu peux me contacter pour un retour sur l’application TaskBell, un bug, ou une amélioration UX.
-        </p>
-
-        <div class="info-list">
-          <div class="info-item">
-            <div class="info-ico">⚡</div>
-            <div>
-              <div class="info-title">Réponse rapide</div>
-              <div class="info-sub">Je réponds dès que possible</div>
-            </div>
-          </div>
-
-          <div class="info-item">
-            <div class="info-ico">🔒</div>
-            <div>
-              <div class="info-title">Confidentiel</div>
-              <div class="info-sub">Tes messages restent privés</div>
-            </div>
-          </div>
-
-          <div class="info-item">
-            <div class="info-ico">🛠️</div>
-            <div>
-              <div class="info-title">Support</div>
-              <div class="info-sub">Bug / idée / amélioration</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="info-footer">
-          <span class="mini-tag">UI/UX</span>
-          <span class="mini-tag">To-Do</span>
-          <span class="mini-tag">Rappel</span>
-          <span class="mini-tag">LocalStorage</span>
-        </div>
+  <!-- CONTACT (PRO) -->
+  <section id="contact" class="section section-alt contact-pro">
+    <div class="container">
+      <div class="contact-head">
+        <h2>Contact</h2>
+        <p class="section-intro">Envoie-moi un message (réel) : je réponds dès que possible.</p>
       </div>
 
-      <!-- Colonne droite -->
-      <div class="contact-form-card">
-        <div class="form-top">
-          <h3>Envoyer un message</h3>
-          <span class="form-chip">Formspree ✅</span>
+      <div class="contact-grid">
+        <!-- Colonne gauche -->
+        <div class="contact-info">
+          <span class="info-badge">💬 Feedback / Support</span>
+          <h3>Parlons de ton projet</h3>
+          <p class="info-text">
+            Tu peux me contacter pour un retour sur l’application TaskBell, un bug, ou une amélioration UX.
+          </p>
+
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-ico">⚡</div>
+              <div>
+                <div class="info-title">Réponse rapide</div>
+                <div class="info-sub">Je réponds dès que possible</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-ico">🔒</div>
+              <div>
+                <div class="info-title">Confidentiel</div>
+                <div class="info-sub">Tes messages restent privés</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-ico">🛠️</div>
+              <div>
+                <div class="info-title">Support</div>
+                <div class="info-sub">Bug / idée / amélioration</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-footer">
+            <span class="mini-tag">UI/UX</span>
+            <span class="mini-tag">To-Do</span>
+            <span class="mini-tag">Rappel</span>
+            <span class="mini-tag">LocalStorage</span>
+          </div>
         </div>
 
-        <form id="contact-form" class="pretty-form pro-form"
-              action="https://formspree.io/f/xvzonyen"
-              method="POST">
-          <div class="grid-2">
-            <div class="float-field">
-              <input id="c-name" name="name" type="text" required placeholder=" " autocomplete="name" />
-              <label for="c-name">Nom</label>
+        <!-- Colonne droite -->
+        <div class="contact-form-card">
+          <div class="form-top">
+            <h3>Envoyer un message</h3>
+            <span class="form-chip">Formspree ✅</span>
+          </div>
+
+          <form id="contact-form" class="pretty-form pro-form"
+                action="https://formspree.io/f/xvzonyen"
+                method="POST">
+            <div class="grid-2">
+              <div class="float-field">
+                <input id="c-name" name="name" type="text" required placeholder=" " autocomplete="name" />
+                <label for="c-name">Nom</label>
+              </div>
+
+              <div class="float-field">
+                <input id="c-email" name="email" type="email" required placeholder=" " autocomplete="email" />
+                <label for="c-email">Email</label>
+              </div>
             </div>
 
             <div class="float-field">
-              <input id="c-email" name="email" type="email" required placeholder=" " autocomplete="email" />
-              <label for="c-email">Email</label>
+              <input id="c-subject" name="subject" type="text" required placeholder=" " />
+              <label for="c-subject">Sujet</label>
             </div>
-          </div>
 
-          <div class="float-field">
-            <input id="c-subject" name="subject" type="text" required placeholder=" " />
-            <label for="c-subject">Sujet</label>
-          </div>
+            <div class="float-field">
+              <textarea id="c-message" name="message" rows="5" required placeholder=" "></textarea>
+              <label for="c-message">Message</label>
+            </div>
 
-          <div class="float-field">
-            <textarea id="c-message" name="message" rows="5" required placeholder=" "></textarea>
-            <label for="c-message">Message</label>
-          </div>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
-          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="contact-actions pro-actions">
+              <button class="btn-primary" type="submit">Envoyer</button>
+              <button class="btn-ghost" type="reset">Effacer</button>
+            </div>
 
-          <div class="contact-actions pro-actions">
-            <button class="btn-primary" type="submit">Envoyer</button>
-            <button class="btn-ghost" type="reset">Effacer</button>
-          </div>
-
-          <div id="contact-status" class="form-status" aria-live="polite"></div>
-        </form>
+            <div id="contact-status" class="form-status" aria-live="polite"></div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-
+  <!-- FOOTER -->
   <footer class="footer footer-premium">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <div class="footer-logo">Task<span>Bell</span></div>
-      <p class="footer-text">
-        Mini application To-Do + rappel automatique (simulation).
-      </p>
-      <div class="footer-tags">
-        <span class="tag">Rose & Bleu</span>
-        <span class="tag">UX simple</span>
-        <span class="tag">LocalStorage</span>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Task<span>Bell</span></div>
+        <p class="footer-text">
+          Mini application To-Do + rappel automatique (simulation).
+        </p>
+        <div class="footer-tags">
+          <span class="tag">Rose & Bleu</span>
+          <span class="tag">UX simple</span>
+          <span class="tag">LocalStorage</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <a href="#accueil">Accueil</a>
+        <a href="#appli">Application</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-news">
+        <h4>Newsletter (prototype)</h4>
+        <p class="footer-text muted">Simulation d’une fonctionnalité produit.</p>
+        <form class="news-form">
+          <input type="email" placeholder="Email…" />
+          <button type="button" class="btn-secondary">OK</button>
+        </form>
+        <p class="tiny-note">Prototype : rien n’est envoyé.</p>
       </div>
     </div>
 
-    <div class="footer-links">
-      <h4>Navigation</h4>
-      <a href="#accueil">Accueil</a>
-      <a href="#appli">Application</a>
-      <a href="#contact">Contact</a>
+    <div class="container footer-bottom premium-bottom">
+      <p>© <span id="year"></span> MyTaskSite — DIMI BIENVENUE JALLIA & ANAR Cloé.</p>
+      <a class="back-top" href="#accueil">↑ Retour en haut</a>
     </div>
+  </footer>
 
-    <div class="footer-news">
-      <h4>Newsletter (prototype)</h4>
-      <p class="footer-text muted">Simulation d’une fonctionnalité produit.</p>
-      <form class="news-form">
-        <input type="email" placeholder="Email…" />
-        <button type="button" class="btn-secondary">OK</button>
-      </form>
-      <p class="tiny-note">Prototype : rien n’est envoyé.</p>
-    </div>
-  </div>
-
-  <div class="container footer-bottom premium-bottom">
-    <p>© <span id="year"></span> MyTaskSite — DIMI BIENVENUE JALLIA & ANAR Cloé.</p>
-    <a class="back-top" href="#accueil">↑ Retour en haut</a>
-  </div>
-</footer>
-
-
-  <script src="./script.js" defer></script>
+  <!-- ✅ Sur GitHub Pages : garde le fichier script.js à la racine -->
+  <script src="script.js" defer></script>
 </body>
 </html>
-
-
-
