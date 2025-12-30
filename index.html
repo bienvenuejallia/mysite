@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>MyTaskSite – To-Do + Rappel sonore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="#accueil">MyTask<span>Site</span></a>
+      <nav class="main-nav">
+        <a href="#accueil" class="nav-link">Accueil</a>
+        <a href="#appli" class="nav-link">Application</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer le thème">🌙</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="accueil" class="hero">
+    <div class="container hero-grid">
+
+      <div class="hero-text">
+        <p class="badge">Projet – Cheffe de Projet IT</p>
+
+        <h1 class="hero-title">
+          Mini application de gestion de tâches
+          <span class="hero-title-decor">vraie sauvegarde + rappel automatique</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Ajoute une tâche, elle s’affiche tout de suite et reste sauvegardée.
+          Mets une échéance + minutes de rappel : l’application te notifie automatiquement.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#appli" class="btn-primary">Ouvrir l’application</a>
+          <a href="#contact" class="btn-ghost">Donner un feedback</a>
+        </div>
+
+        <div class="hero-switcher" role="tablist" aria-label="Aperçu interactif">
+          <button class="switch-btn active" type="button" data-preview="p-list" role="tab" aria-selected="true">📌 Liste</button>
+          <button class="switch-btn" type="button" data-preview="p-details" role="tab" aria-selected="false">🧾 Détails</button>
+          <button class="switch-btn" type="button" data-preview="p-reminder" role="tab" aria-selected="false">🔔 Rappel</button>
+        </div>
+
+        <div class="hero-mini-info">
+          <div class="mini-pill">⚡ Ajout instantané</div>
+          <div class="mini-pill">💾 Sauvegarde locale</div>
+          <div class="mini-pill">⏰ Rappel automatique</div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="preview-card">
+          <div class="preview-top">
+            <span class="chip chip-pink">Task</span>
+            <span class="chip chip-blue">Bell</span>
+            <span class="chip chip-dark">Aperçu live</span>
+          </div>
+
+          <div class="preview-panel active" id="p-list">
+            <div class="preview-title">📌 Liste des tâches</div>
+
+            <div class="preview-task">
+              <span class="dot dot-pink"></span>
+              <div class="preview-task-text">
+                <div class="t1">Réviser PW</div>
+                <div class="t2">Études • Haute • Aujourd’hui</div>
+              </div>
+              <span class="status-badge">À faire</span>
+            </div>
+
+            <div class="preview-task">
+              <span class="dot dot-blue"></span>
+              <div class="preview-task-text">
+                <div class="t1">Faire les courses</div>
+                <div class="t2">Maison • Normale</div>
+              </div>
+              <span class="status-badge pending">En attente</span>
+            </div>
+
+            <div class="preview-task done">
+              <span class="dot dot-purple"></span>
+              <div class="preview-task-text">
+                <div class="t1">Sport</div>
+                <div class="t2">Sport • Basse</div>
+              </div>
+              <span class="status-badge done">Fait</span>
+            </div>
+          </div>
+
+          <div class="preview-panel" id="p-details">
+            <div class="preview-title">🧾 Détails d’une tâche</div>
+            <div class="preview-details">
+              <div class="row"><span>Catégorie</span><b>Études</b></div>
+              <div class="row"><span>Priorité</span><b>Urgente</b></div>
+              <div class="row"><span>Échéance</span><b>30/12 – 03:36</b></div>
+              <div class="row"><span>Tags</span><b>#urgent #révision</b></div>
+              <div class="row"><span>Sous-tâches</span><b>exo 1 • exo 2 • exo 3</b></div>
+            </div>
+            <div class="preview-tip">Clique une tâche ➜ détails à droite</div>
+          </div>
+
+          <div class="preview-panel" id="p-reminder">
+            <div class="preview-title">🔔 Rappel automatique</div>
+
+            <div class="preview-notif">
+              <div class="bell">🔔</div>
+              <div>
+                <div class="n1">Rappel TaskBell</div>
+                <div class="n2">“Réviser PW” dans 5 minutes</div>
+              </div>
+            </div>
+
+            <div class="preview-sound">
+              <div class="sound-wave"></div>
+              <div class="sound-wave"></div>
+              <div class="sound-wave"></div>
+            </div>
+
+            <div class="preview-tip">Son + toast si activé</div>
+          </div>
+        </div>
+
+        <p class="hero-caption">Aperçu interactif — plus proche d’une vraie application.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- APPLICATION -->
+  <section id="appli" class="section">
+    <div class="container">
+      <h2>Application TaskBell</h2>
+      <p class="section-intro">
+        Remplis le formulaire ➜ clique <b>Ajouter</b> ➜ la tâche est <b>sauvegardée</b> et <b>visible</b>.
+        Si tu mets une échéance + un rappel, l’application te notifie automatiquement.
+      </p>
+
+      <div class="app-shell">
+        <!-- MAIN -->
+        <div class="panel panel-main">
+          <div class="panel-head">
+            <div>
+              <h3 class="panel-title">Mes tâches</h3>
+              <p class="panel-subtitle">Crée, organise, coche, modifie — et retrouve tes tâches sauvegardées.</p>
+            </div>
+
+            <div class="panel-actions">
+              <button id="focus-mode" class="btn-pill subtle" type="button">🎯 Mode Focus</button>
+              <button id="clear-completed" class="btn-pill subtle" type="button">Suppr. terminées</button>
+              <button id="clear-all" class="btn-pill danger" type="button">Tout supprimer</button>
+            </div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-top">
+              <div>
+                <div class="progress-title">Avancement</div>
+                <div class="progress-sub" id="progress-text">0% terminé</div>
+              </div>
+              <div class="progress-badges">
+                <span class="badge-mini blue">Total: <b id="stat-total">0</b></span>
+                <span class="badge-mini pink">À faire: <b id="stat-todo">0</b></span>
+                <span class="badge-mini purple">Fait: <b id="stat-done">0</b></span>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <form id="task-form" class="task-create">
+            <div class="field">
+              <label for="task-title">Tâche</label>
+              <input id="task-title" type="text" placeholder="Ex: Réviser le cours…" required />
+            </div>
+
+            <div class="grid-3">
+              <div class="field">
+                <label for="task-category">Catégorie</label>
+                <select id="task-category">
+                  <option value="Études">Études</option>
+                  <option value="Maison">Maison</option>
+                  <option value="Sport">Sport</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="task-priority">Priorité</label>
+                <select id="task-priority">
+                  <option value="Basse">Basse</option>
+                  <option value="Normale" selected>Normale</option>
+                  <option value="Haute">Haute</option>
+                  <option value="Urgente">Urgente</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="task-due">Échéance</label>
+                <input id="task-due" type="datetime-local" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="task-tags">Tags (séparés par virgule)</label>
+                <input id="task-tags" type="text" placeholder="ex: révision, urgent, maison" />
+              </div>
+
+              <div class="field">
+                <label for="task-reminder">Rappel (minutes avant)</label>
+                <select id="task-reminder">
+                  <option value="0" selected>Pas de rappel</option>
+                  <option value="5">5 min</option>
+                  <option value="10">10 min</option>
+                  <option value="15">15 min</option>
+                  <option value="30">30 min</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="task-note">Note (optionnel)</label>
+              <input id="task-note" type="text" placeholder="Ex: chapitre 3 + exos 5 à 10" />
+            </div>
+
+            <div class="field">
+              <label for="task-subtasks">Sous-tâches (une par ligne)</label>
+              <textarea id="task-subtasks" rows="3" placeholder="- exo 1&#10;- exo 2&#10;- exo 3"></textarea>
+            </div>
+
+            <div class="create-actions">
+              <button class="btn-primary" type="submit">Ajouter</button>
+              <button id="add-demo" class="btn-ghost" type="button">Ajouter 2 exemples</button>
+            </div>
+          </form>
+
+          <div class="task-toolbar">
+            <div class="toolbar-left">
+              <div class="pill">
+                <span class="pill-label">Statut</span>
+                <select id="filter-status">
+                  <option value="all" selected>Toutes</option>
+                  <option value="todo">À faire</option>
+                  <option value="pending">En attente</option>
+                  <option value="done">Terminées</option>
+                </select>
+              </div>
+
+              <div class="pill">
+                <span class="pill-label">Priorité</span>
+                <select id="filter-priority">
+                  <option value="all" selected>Toutes</option>
+                  <option value="Basse">Basse</option>
+                  <option value="Normale">Normale</option>
+                  <option value="Haute">Haute</option>
+                  <option value="Urgente">Urgente</option>
+                </select>
+              </div>
+
+              <div class="pill">
+                <span class="pill-label">Catégorie</span>
+                <select id="filter-category">
+                  <option value="all" selected>Toutes</option>
+                  <option value="Études">Études</option>
+                  <option value="Maison">Maison</option>
+                  <option value="Sport">Sport</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <div class="search">
+                <input id="search" type="text" placeholder="Rechercher (titre, note, tags)…" />
+              </div>
+
+              <div class="pill">
+                <span class="pill-label">Trier</span>
+                <select id="sort">
+                  <option value="created_desc" selected>Récent</option>
+                  <option value="created_asc">Ancien</option>
+                  <option value="due_asc">Échéance ↑</option>
+                  <option value="due_desc">Échéance ↓</option>
+                  <option value="priority_desc">Priorité</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <p class="hint">Clique sur une tâche pour voir ses détails à droite. Le rappel se déclenche automatiquement si configuré.</p>
+          <ul id="task-list" class="task-list"></ul>
+        </div>
+
+        <!-- SIDE -->
+        <aside class="panel panel-side">
+          <div class="panel-head">
+            <div>
+              <h3 class="panel-title">Rappels & détails</h3>
+              <p class="panel-subtitle">Toast + son (auto) + aperçu.</p>
+            </div>
+          </div>
+
+          <div class="side-block">
+            <div class="toggle">
+              <input type="checkbox" id="notif-enabled" checked />
+              <label for="notif-enabled">Activer le son</label>
+            </div>
+
+            <div class="field">
+              <label for="sound-style">Son</label>
+              <select id="sound-style">
+                <option value="beep" selected>Beep</option>
+                <option value="chime">Chime</option>
+                <option value="soft">Soft</option>
+              </select>
+            </div>
+
+            <button id="sound-preview" class="btn-ghost" type="button">🔊 Écouter le son</button>
+            <button id="notif-test-btn" class="btn-secondary" type="button">🔔 Tester la notification</button>
+
+            <div id="notif-toast" class="toast" role="status" aria-live="polite">
+              🔔 Rappel : tu as une tâche à faire !
+            </div>
+          </div>
+
+          <div class="side-block details-block">
+            <h4>Détails de la tâche</h4>
+
+            <div id="task-details-empty" class="details-empty">
+              Clique sur une tâche pour voir toutes les informations ici.
+            </div>
+
+            <div id="task-details" class="task-details"></div>
+
+            <button id="play-task-sound" class="btn-secondary" type="button" disabled>
+              🔊 Écouter le rappel de cette tâche
+            </button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT (premium) -->
+<section id="contact" class="section section-alt contact-pro">
+  <div class="container">
+    <div class="contact-head">
+      <h2>Contact</h2>
+      <p class="section-intro">
+        Vous savez quoi faire .
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Colonne gauche : infos -->
+      <aside class="contact-info">
+        <div class="info-badge">📩 Feedback</div>
+
+        <h3>On échange ?</h3>
+        <p class="info-text">
+          Dis-moi ce que tu as aimé, ce qui manque, ou une idée d’amélioration.
+          Je lis tout et je réponds dès que possible.
+        </p>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span class="info-ico">⏱</span>
+            <div>
+              <div class="info-title">Délai de réponse</div>
+              <div class="info-sub">24–48h en moyenne</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-ico">✅</span>
+            <div>
+              <div class="info-title">Message réel</div>
+              <div class="info-sub">Envoi via Formspree</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-ico">🔒</span>
+            <div>
+              <div class="info-title">Anti-spam</div>
+              <div class="info-sub">Champ invisible activé</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-footer">
+          <span class="mini-tag">UI propre</span>
+          <span class="mini-tag">Simple</span>
+          <span class="mini-tag">Pro</span>
+        </div>
+      </aside>
+
+      <!-- Colonne droite : formulaire -->
+      <div class="contact-form-card">
+        <div class="form-top">
+          <h3>Envoyer un message</h3>
+          <span class="form-chip">Réponse 24–48h</span>
+        </div>
+
+        <form id="contact-form" class="pretty-form pro-form"
+              action="https://formspree.io/f/XXXXXXX" method="POST">
+
+          <div class="grid-2">
+            <div class="float-field">
+              <input id="c-name" name="name" type="text" required placeholder=" " autocomplete="name" />
+              <label for="c-name">Nom</label>
+            </div>
+
+            <div class="float-field">
+              <input id="c-email" name="email" type="email" required placeholder=" " autocomplete="email" />
+              <label for="c-email">Email</label>
+            </div>
+          </div>
+
+          <div class="float-field">
+            <input id="c-subject" name="subject" type="text" required placeholder=" " />
+            <label for="c-subject">Sujet</label>
+          </div>
+
+          <div class="float-field">
+            <textarea id="c-message" name="message" rows="6" required placeholder=" "></textarea>
+            <label for="c-message">Message</label>
+          </div>
+
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="contact-actions pro-actions">
+            <button class="btn-primary" type="submit">Envoyer</button>
+            <button class="btn-ghost" type="reset">Effacer</button>
+          </div>
+
+          <div id="contact-status" class="form-status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <footer class="footer footer-premium">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">Task<span>Bell</span></div>
+      <p class="footer-text">
+        Mini application To-Do + rappel automatique (simulation).
+      </p>
+      <div class="footer-tags">
+        <span class="tag">Rose & Bleu</span>
+        <span class="tag">UX simple</span>
+        <span class="tag">LocalStorage</span>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <a href="#accueil">Accueil</a>
+      <a href="#appli">Application</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-news">
+      <h4>Newsletter (prototype)</h4>
+      <p class="footer-text muted">Simulation d’une fonctionnalité produit.</p>
+      <form class="news-form">
+        <input type="email" placeholder="Email…" />
+        <button type="button" class="btn-secondary">OK</button>
+      </form>
+      <p class="tiny-note">Prototype : rien n’est envoyé.</p>
+    </div>
+  </div>
+
+  <div class="container footer-bottom premium-bottom">
+    <p>© <span id="year"></span> MyTaskSite — DIMI BIENVENUE JALLIA & ANAR Cloé.</p>
+    <a class="back-top" href="#accueil">↑ Retour en haut</a>
+  </div>
+</footer>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
