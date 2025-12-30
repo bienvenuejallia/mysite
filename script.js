@@ -61,13 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // ✅ plus safe : détecte aussi TON_ID_ICI
-      if (!contactForm.action || contactForm.action.includes("XXXXXXX") || contactForm.action.includes("TON_ID_ICI")) {
-        contactStatus.className = "form-status err";
-        contactStatus.textContent = "⚠️ Ajoute ton lien Formspree réel dans action=\"...\"";
-        return;
-      }
-
       contactStatus.className = "form-status ok";
       contactStatus.textContent = "Envoi en cours…";
 
@@ -78,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Accept": "application/json" }
         });
 
-        // ✅ lire json si possible (Formspree renvoie des erreurs détaillées)
         const data = await res.json().catch(() => null);
 
         if (res.ok) {
@@ -105,10 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const GRACE = 2 * 60 * 1000;
 
   const STATUS = { TODO: "todo", PENDING: "pending", DONE: "done" };
-
   const el = (id) => document.getElementById(id);
 
-  // Form
   const form = el("task-form");
   const titleEl = el("task-title");
   const categoryEl = el("task-category");
@@ -120,39 +110,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const subtasksEl = el("task-subtasks");
   const taskList = el("task-list");
 
-  // Toolbar
   const filterStatusEl = el("filter-status");
   const filterPriorityEl = el("filter-priority");
   const filterCategoryEl = el("filter-category");
   const searchEl = el("search");
   const sortEl = el("sort");
 
-  // Buttons
   const addDemoBtn = el("add-demo");
   const clearAllBtn = el("clear-all");
   const clearCompletedBtn = el("clear-completed");
   const focusModeBtn = el("focus-mode");
 
-  // Side notif
   const notifEnabled = el("notif-enabled");
   const soundStyleEl = el("sound-style");
   const soundPreviewBtn = el("sound-preview");
   const notifTestBtn = el("notif-test-btn");
   const toastEl = el("notif-toast");
 
-  // Stats
   const statTotalEl = el("stat-total");
   const statTodoEl = el("stat-todo");
   const statDoneEl = el("stat-done");
   const progressFillEl = el("progress-fill");
   const progressTextEl = el("progress-text");
 
-  // Details panel
   const detailsEmpty = el("task-details-empty");
   const detailsBox = el("task-details");
   const playTaskSoundBtn = el("play-task-sound");
 
-  // ---- State UI
   const view = {
     selectedId: null,
     filters: { status: "all", priority: "all", category: "all" },
@@ -160,9 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sort: "created_desc"
   };
 
-  // =========================
-  // Utils
-  // =========================
   const loadTasks = () => {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
     catch { return []; }
@@ -223,9 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toast._t = setTimeout(() => (toastEl.style.display = "none"), 2600);
   };
 
-  // =========================
-  // Audio
-  // =========================
+  // Audio unlock
   let audioUnlocked = false;
   window.addEventListener("pointerdown", () => {
     if (audioUnlocked) return;
@@ -246,7 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const playSound = (style = "beep") => {
     if (!notifEnabled || !notifEnabled.checked) return;
-
     const AC = window.AudioContext || window.webkitAudioContext;
     const ctx = new AC();
     const osc = ctx.createOscillator();
@@ -288,9 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => ctx.close?.(), 500);
   };
 
-  // =========================
-  // Progress/stats
-  // =========================
   const updateProgress = (tasks) => {
     if (!statTotalEl || !statTodoEl || !statDoneEl || !progressFillEl || !progressTextEl) return;
 
@@ -310,9 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
     progressTextEl.textContent = `${pct}% terminé`;
   };
 
-  // =========================
-  // Filters/search/sort (view)
-  // =========================
   const applyView = (tasks) => {
     let out = tasks.slice().map(normalizeStatus);
 
@@ -341,13 +313,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return out;
   };
 
-  // =========================
-  // Details panel (✅ FIX: ne dépend plus du bouton)
-  // =========================
   const renderDetails = (task) => {
     if (!detailsBox || !detailsEmpty) return;
 
-    // si bouton absent, on continue quand même
     if (!task) {
       detailsEmpty.style.display = "block";
       detailsBox.innerHTML = "";
@@ -386,9 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // =========================
-  // Render list
-  // =========================
   const render = () => {
     if (!taskList) return;
 
@@ -408,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
       taskList.appendChild(li);
 
-      // ✅ si selectedId existe encore dans tasks, on garde, sinon null
       const cur = tasks.find(x => x.id === view.selectedId);
       renderDetails(cur || null);
       return;
@@ -453,14 +417,10 @@ document.addEventListener("DOMContentLoaded", () => {
       taskList.appendChild(li);
     });
 
-    // ✅ rend les détails depuis tasks (pas re-load inutile)
     const current = tasks.find(x => x.id === view.selectedId);
     renderDetails(current || null);
   };
 
-  // =========================
-  // Reminders auto
-  // =========================
   const checkReminders = () => {
     const tasks = loadTasks();
     const now = Date.now();
@@ -489,9 +449,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (changed) saveTasks(tasks);
   };
 
-  // =========================
-  // Actions tasks
-  // =========================
   const addTask = () => {
     const title = (titleEl?.value || "").trim();
     if (!title) { toast("⚠️ Écris un titre de tâche"); return; }
@@ -516,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tasks.push(t);
     saveTasks(tasks);
 
-    // ✅ sélection automatique + détails
     view.selectedId = t.id;
 
     render();
@@ -571,9 +527,6 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   };
 
-  // =========================
-  // Events
-  // =========================
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -581,7 +534,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Click list: buttons + selection
   if (taskList) {
     taskList.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-action]");
@@ -602,11 +554,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // selection (click on li)
       const li = e.target.closest("li.task-item");
       if (!li || !li.dataset.id) return;
-
-      // éviter sélection si on clique sur checkbox
       if (e.target.closest("input[type='checkbox']")) return;
 
       view.selectedId = li.dataset.id;
@@ -621,27 +570,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Toolbar events
-  const rerenderOnChange = () => render();
-
   if (filterStatusEl) filterStatusEl.addEventListener("change", () => {
     view.filters.status = filterStatusEl.value;
-    rerenderOnChange();
+    render();
   });
 
   if (filterPriorityEl) filterPriorityEl.addEventListener("change", () => {
     view.filters.priority = filterPriorityEl.value;
-    rerenderOnChange();
+    render();
   });
 
   if (filterCategoryEl) filterCategoryEl.addEventListener("change", () => {
     view.filters.category = filterCategoryEl.value;
-    rerenderOnChange();
+    render();
   });
 
   if (sortEl) sortEl.addEventListener("change", () => {
     view.sort = sortEl.value;
-    rerenderOnChange();
+    render();
   });
 
   if (searchEl) {
@@ -650,12 +596,11 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(t);
       t = setTimeout(() => {
         view.search = searchEl.value || "";
-        rerenderOnChange();
+        render();
       }, 120);
     });
   }
 
-  // Buttons: demo, clear, focus
   if (addDemoBtn) {
     addDemoBtn.addEventListener("click", () => {
       const tasks = loadTasks();
@@ -728,7 +673,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Side buttons
   if (soundPreviewBtn) {
     soundPreviewBtn.addEventListener("click", () => {
       toast("🔊 Aperçu du son");
@@ -755,20 +699,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // INIT
   render();
   checkReminders();
   setInterval(checkReminders, CHECK_EVERY);
 });
 
 // =========================
-// NAV ACTIVE (garde en dehors du DOMContentLoaded comme tu l’avais)
+// NAV ACTIVE
 // =========================
 const navLinks = document.querySelectorAll(".main-nav a");
 
 const setActive = () => {
   const y = window.scrollY + 120;
-  const sections = ["accueil","appli","contact"].map(id => document.getElementById(id)).filter(Boolean);
+  const sections = ["accueil", "appli", "contact"]
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
 
   let current = "accueil";
   sections.forEach(sec => {
